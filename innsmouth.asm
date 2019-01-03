@@ -7,11 +7,6 @@ SPRITE = $0200
 
 .segment "SRAM1"
 
-VBLANK_COUNTER:
-    .byte $00
-BACKGROUND_INDEX:
-    .byte $00
-
 .segment "STARTUP"
 
 .segment "CODE"
@@ -22,6 +17,7 @@ palette:
 
 .include "include/nes.inc"
 .include "include/macros.inc"
+.include "globals.asm"
 .include "init.asm"
 .include "graphics.asm"
 
