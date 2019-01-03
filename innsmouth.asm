@@ -31,18 +31,16 @@
     ;; Tell the PPU which address we're interested in
     LDX #$3f
     LDA #$00
-    STX $2006
-    STA $2006
+    STX PPUADDR
+    STA PPUADDR
 
     ;; Write to that address $3f00 the contents of $00FF (the next bg colour)
     LDA $00FF
-    STA $2007
+    STA PPUDATA
 
     ;; Do something with the PPU?
     LDA #%00011110
-    STA $2001
-
-
+    STA PPUMASK
 retnmi:
     RTI
 .endproc
@@ -59,12 +57,12 @@ retnmi:
     ;; Initialize PPU Control Register One parameters
     ;; Generate NMI on VBlank ENABLED
     LDX #%10000000
-    STX PPUCTRL0
+    STX PPUCTRL
 
     ;; Initialize PPU Control Register Two Parameters
     ;; All DEFAULT
     LDX #%00000000
-    STX PPUCTRL1
+    STX PPUMASK
 
     ;; Set the next bg colour to $00
     LDX #$00
