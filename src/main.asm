@@ -1,25 +1,15 @@
-.segment "HEADER"
-.byte "NES", 26, 2, 1, 0, 0
-
-SPRITE = $0200
-
-.segment "ZEROPAGE"
-
-.segment "SRAM1"
-
-.segment "STARTUP"
-
 .segment "CODE"
 
-palette:
-.byte $0E,$00,$0E,$19,$00,$00,$00,$00,$00,$00,$00,$00,$01,$00,$01,$21
-.byte $0E,$20,$22,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$0
+.include "nes.inc"
+.include "macros.inc"
+.include "constants.inc"
+.include "globals.inc"
 
-.include "include/nes.inc"
-.include "include/macros.inc"
-.include "globals.asm"
-.include "init.asm"
-.include "graphics.asm"
+.segment "ZEROPAGE"
+VBLANK_COUNTER: .res 1
+BACKGROUND_INDEX:   .res 1
+
+.segment "CODE"
 
 .proc irq_handler
     RTI
@@ -46,8 +36,6 @@ palette:
 
     ;; Write the background to the PPU
     PPU_WRITE #$3F, #$00, BACKGROUND_INDEX
-
-
 retnmi:
     RTI
 .endproc
@@ -71,9 +59,13 @@ retnmi:
     LDX #VBLANK_NMI
     STX PPUCTRL
 
+    WAIT_FOR_VBLANK
+
     ;; Set PPU Mask parameters
     LDX #OBJ_ON | BG_ON
     STX PPUMASK
+
+    WAIT_FOR_VBLANK
 
 .endproc
 
@@ -81,11 +73,3 @@ retnmi:
     ;; Infinite loop - all logic is done within VBLank NMI code
     JMP main
 .endproc
-
-.segment "RODATA"
-
-.segment "VECTORS"
-.addr nmi_handler, reset_handler, irq_handler
-
-.segment "CHARS"
-.res 8192
