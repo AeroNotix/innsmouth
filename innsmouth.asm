@@ -24,6 +24,10 @@
     ;; if so, increment to the next bg colour
     INC $00FF
 
+    ;; Reset vblank counter
+    LDX #$00
+    STX $00DD
+
     ;; Tell the PPU which address we're interested in
     LDX #$3f
     LDA #$00
@@ -38,9 +42,6 @@
     LDA #%00011110
     STA $2001
 
-    ;; Reset vblank counter
-    LDX #$00
-    STX $00DD
 
 retnmi:
     RTI
