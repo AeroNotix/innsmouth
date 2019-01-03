@@ -74,6 +74,13 @@ retnmi:
     LDX #$00
     STX $00DD
 
+    ;; Set the stack pointer
+    LDX #$FF
+    TXS
+
+    ;; Re-enable interrupts
+    CLI
+
 vblankwait:
     ;; wait for PPU to stabilize
     BIT PPUSTATUS
