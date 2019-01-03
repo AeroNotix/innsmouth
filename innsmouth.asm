@@ -13,10 +13,7 @@ palette:
 
 
 .proc loadpalette
-    LDA #$3F
-    LDX #$00
-    STA PPUDATA
-    STX PPUDATA
+    PPU_REQUEST #$3F, #$00
 continue_palette_write:
     LDA palette, X
     STA PPUDATA
