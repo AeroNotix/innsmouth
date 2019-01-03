@@ -5,6 +5,31 @@
 
 .include "include/defines.asm"
 
+;;; Simple pallete
+palette:
+.byte $0E,$00,$0E,$19,$00,$00,$00,$00,$00,$00,$00,$00,$01,$00,$01,$21
+.byte $0E,$20,$22,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$0
+
+
+.proc loadpalette
+    LDA #$3F
+    LDX #$00
+    STA PPUDATA
+    STX PPUDATA
+continue_palette_write:
+    LDA palette, X
+    STA PPUDATA
+    INX
+    CPX #$20
+    BNE continue_palette_write
+    RTS
+.endproc
+
+.proc initgraphics
+    JSR loadpalette
+    RTS
+.endproc
+
 .proc irq_handler
     RTI
 .endproc
@@ -75,6 +100,8 @@ retnmi:
     ;; Set the stack pointer
     LDX #$FF
     TXS
+
+    JSR initgraphics
 
     ;; Re-enable interrupts
     CLI
