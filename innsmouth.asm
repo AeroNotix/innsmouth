@@ -1,39 +1,29 @@
 .segment "HEADER"
 .byte "NES", 26, 2, 1, 0, 0
 
+SPRITE = $0200
+
 .segment "ZEROPAGE"
+
+.segment "SRAM1"
 
 VBLANK_COUNTER:
     .byte $00
 BACKGROUND_INDEX:
     .byte $00
 
+.segment "STARTUP"
+
 .segment "CODE"
 
-.include "include/defines.asm"
-.include "include/macros.asm"
-
-;;; Simple pallete
 palette:
 .byte $0E,$00,$0E,$19,$00,$00,$00,$00,$00,$00,$00,$00,$01,$00,$01,$21
 .byte $0E,$20,$22,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$0
 
-
-.proc loadpalette
-    PPU_REQUEST #$3F, #$00
-continue_palette_write:
-    LDA palette, X
-    STA PPUDATA
-    INX
-    CPX #$20
-    BNE continue_palette_write
-    RTS
-.endproc
-
-.proc initgraphics
-    JSR loadpalette
-    RTS
-.endproc
+.include "include/nes.inc"
+.include "include/macros.inc"
+.include "init.asm"
+.include "graphics.asm"
 
 .proc irq_handler
     RTI
@@ -61,9 +51,7 @@ continue_palette_write:
     ;; Write the background to the PPU
     PPU_WRITE #$3F, #$00, BACKGROUND_INDEX
 
-    ;; Do something with the PPU?
-    LDA #%00011110
-    STA PPUMASK
+
 retnmi:
     RTI
 .endproc
@@ -72,35 +60,25 @@ retnmi:
     ;; basic "voodoo" prevention
     ;; * disable interrupts
     ;; * clear decimal bit
-    ;; (should also realistically set RAM(s) to known values)
+    ;; * set stack pointer
+    ;; * We should also set RAM to known values but w/e
     SEI
     CLD
-    ;;  end voodoo prevention
-
-    ;; Initialize PPU Control Register One parameters
-    ;; Generate NMI on VBlank ENABLED
-    LDX #%10000000
-    STX PPUCTRL
-
-    ;; Initialize PPU Control Register Two Parameters
-    ;; All DEFAULT
-    LDX #%00000000
-    STX PPUMASK
-
     ;; Set the stack pointer
     LDX #$FF
     TXS
+    ;;  end voodoo prevention
 
-    JSR initgraphics
+    WAIT_FOR_VBLANK
 
-    ;; Re-enable interrupts
-    CLI
+    ;; Initialize PPU Control Register One parameters
+    LDX #VBLANK_NMI
+    STX PPUCTRL
 
-vblankwait:
-    ;; wait for PPU to stabilize
-    BIT PPUSTATUS
-    BPL vblankwait
-    JMP main
+    ;; Set PPU Mask parameters
+    LDX #OBJ_ON | BG_ON
+    STX PPUMASK
+
 .endproc
 
 .proc main
@@ -108,9 +86,10 @@ vblankwait:
     JMP main
 .endproc
 
+.segment "RODATA"
+
 .segment "VECTORS"
 .addr nmi_handler, reset_handler, irq_handler
 
 .segment "CHARS"
 .res 8192
-.segment "STARTUP"

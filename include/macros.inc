@@ -1,3 +1,4 @@
+;; -*- asm -*-
 ;;; A simple macro to shorten setting the PPU request address
 .macro PPU_REQUEST highbyte, lowbyte
     LDX highbyte
@@ -10,4 +11,10 @@
     PPU_REQUEST highbyte, lowbyte
     LDA data
     STA PPUDATA
+.endmacro
+
+.macro WAIT_FOR_VBLANK
+    :    ;; Wait for PPU to stabilize
+    BIT PPUSTATUS
+    BPL :-
 .endmacro

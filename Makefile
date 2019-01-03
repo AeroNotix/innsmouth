@@ -4,10 +4,10 @@ OBJ_FILES=$(patsubst %.asm,%.o,${ASM_FILES})
 all: innsmouth.nes
 
 clean:
-	@rm *.nes *.o
+	@rm -rf *.nes *.o
 
 innsmouth.nes: innsmouth.o
-	@ld65 innsmouth.o -t nes -o innsmouth.nes
+	@ld65 -C ld.cfg innsmouth.o -o innsmouth.nes
 
 %.o: %.asm
 	ca65 $^ -o $@
