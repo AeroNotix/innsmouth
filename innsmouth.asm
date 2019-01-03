@@ -4,6 +4,7 @@
 .segment "CODE"
 
 .include "include/defines.asm"
+.include "include/macros.asm"
 
 ;;; Simple pallete
 palette:
@@ -53,15 +54,8 @@ continue_palette_write:
     LDX #$00
     STX $00DD
 
-    ;; Tell the PPU which address we're interested in
-    LDX #$3f
-    LDA #$00
-    STX PPUADDR
-    STA PPUADDR
-
-    ;; Write to that address $3f00 the contents of $00FF (the next bg colour)
-    LDA $00FF
-    STA PPUDATA
+    ;; Write the background to the PPU
+    PPU_WRITE #$3F, #$00, $00FF
 
     ;; Do something with the PPU?
     LDA #%00011110
