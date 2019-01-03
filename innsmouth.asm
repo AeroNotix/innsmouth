@@ -1,6 +1,13 @@
 .segment "HEADER"
 .byte "NES", 26, 2, 1, 0, 0
 
+.segment "ZEROPAGE"
+
+VBLANK_COUNTER:
+    .byte $00
+BACKGROUND_INDEX:
+    .byte $00
+
 .segment "CODE"
 
 .include "include/defines.asm"
@@ -33,26 +40,26 @@ continue_palette_write:
 .endproc
 
 .proc nmi_handler
-    ;; Every $10 Vblanks, change the background colour ($00FF contains the
+    ;; Every $10 Vblanks, change the background colour (BACKGROUND_INDEX contains the
     ;; bg colour)
 
     ;; Set X to desired number of vblanks to wait before changing colour
     LDX #$10
     ;; increment vblank counter
-    INC $00DD
+    INC VBLANK_COUNTER
     ;; Did we reach desired vblank count?
-    CPX $00DD
+    CPX VBLANK_COUNTER
     ;; if not, return from NMI handler
     BNE retnmi
     ;; if so, increment to the next bg colour
-    INC $00FF
+    INC BACKGROUND_INDEX
 
     ;; Reset vblank counter
     LDX #$00
-    STX $00DD
+    STX VBLANK_COUNTER
 
     ;; Write the background to the PPU
-    PPU_WRITE #$3F, #$00, $00FF
+    PPU_WRITE #$3F, #$00, BACKGROUND_INDEX
 
     ;; Do something with the PPU?
     LDA #%00011110
@@ -79,14 +86,6 @@ retnmi:
     ;; All DEFAULT
     LDX #%00000000
     STX PPUMASK
-
-    ;; Set the next bg colour to $00
-    LDX #$00
-    STX $00FF
-
-    ;; Set the VBlank counter to zero
-    LDX #$00
-    STX $00DD
 
     ;; Set the stack pointer
     LDX #$FF
