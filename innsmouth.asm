@@ -17,11 +17,11 @@
     LDX #$10
     ;; increment vblank counter
     INC $00DD
-    ;; Did we reach desired vblank amount?
+    ;; Did we reach desired vblank count?
     CPX $00DD
     ;; if not, return from NMI handler
     BNE retnmi
-    ;; if so, increment the bg colour and reset vblank counter
+    ;; if so, increment to the next bg colour
     INC $00FF
 
     ;; Tell the PPU which address we're interested in
