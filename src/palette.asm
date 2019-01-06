@@ -7,12 +7,12 @@
     PPU_REQUEST #$3F, #$00
     LDX #$00
 copypalloop:
-  LDA initial_palette,x
-  STA PPUDATA
-  INX
-  CPX #32
-  BCC copypalloop
-  RTS
+    LDA initial_palette,x
+    STA PPUDATA
+    INX
+    CPX #32
+    BCC copypalloop
+    RTS
 .endproc
 
 .segment "RODATA"
