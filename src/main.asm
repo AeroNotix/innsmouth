@@ -4,7 +4,7 @@
 .include "macros.inc"
 .include "constants.inc"
 .include "globals.inc"
-.import load_graphics_into_ppu
+.import load_graphics_into_ppu, load_main_palette
 
 .segment "ZEROPAGE"
 CURRENT_CHAR: .res 1
@@ -54,7 +54,9 @@ CURRENT_CHAR: .res 1
 .endproc
 
 .proc main
-    JMP main
+    JSR load_main_palette
+forever:
+    JMP forever
 .endproc
 
 .segment "CHR"

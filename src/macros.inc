@@ -1,4 +1,6 @@
 ;; -*- asm -*-
+.ifndef MACROS_INC
+.define MACROS_INC
 ;;; A simple macro to shorten setting the PPU request address
 .macro PPU_REQUEST highbyte, lowbyte
     LDX highbyte
@@ -18,3 +20,5 @@
     BIT PPUSTATUS
     BPL :-
 .endmacro
+
+.endif
