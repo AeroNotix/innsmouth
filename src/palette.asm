@@ -5,6 +5,7 @@
 
 .proc load_main_palette
     PPU_REQUEST #$3F, #$00
+    LDX #$00
 copypalloop:
   LDA initial_palette,x
   STA PPUDATA
