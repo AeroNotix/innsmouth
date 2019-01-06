@@ -4,10 +4,10 @@
 .include "macros.inc"
 .include "constants.inc"
 .include "globals.inc"
+.import load_graphics_into_ppu
 
 .segment "ZEROPAGE"
-VBLANK_COUNTER: .res 1
-BACKGROUND_INDEX:   .res 1
+CURRENT_CHAR: .res 1
 
 .segment "CODE"
 
@@ -16,27 +16,10 @@ BACKGROUND_INDEX:   .res 1
 .endproc
 
 .proc nmi_handler
-    ;; Every $10 Vblanks, change the background colour (BACKGROUND_INDEX contains the
-    ;; bg colour)
-
-    ;; Set X to desired number of vblanks to wait before changing colour
-    LDX #$10
-    ;; increment vblank counter
-    INC VBLANK_COUNTER
-    ;; Did we reach desired vblank count?
-    CPX VBLANK_COUNTER
-    ;; if not, return from NMI handler
-    BNE retnmi
-    ;; if so, increment to the next bg colour
-    INC BACKGROUND_INDEX
-
-    ;; Reset vblank counter
-    LDX #$00
-    STX VBLANK_COUNTER
-
-    ;; Write the background to the PPU
-    PPU_WRITE #$3F, #$00, BACKGROUND_INDEX
-retnmi:
+    LDA #0
+    STA OAMADDR
+    LDA #>OAM
+    STA OAM_DMA
     RTI
 .endproc
 
@@ -55,6 +38,7 @@ retnmi:
 
     WAIT_FOR_VBLANK
 
+
     ;; Initialize PPU Control Register One parameters
     LDX #VBLANK_NMI
     STX PPUCTRL
@@ -62,14 +46,17 @@ retnmi:
     WAIT_FOR_VBLANK
 
     ;; Set PPU Mask parameters
-    LDX #OBJ_ON | BG_ON
+    LDX #OBJ_ON | BG_OFF
     STX PPUMASK
 
-    WAIT_FOR_VBLANK
-
+    JSR update_graphics
+    JMP main
 .endproc
 
 .proc main
-    ;; Infinite loop - all logic is done within VBLank NMI code
     JMP main
 .endproc
+
+.segment "CHR"
+    .incbin "obj/nes/bggfx.chr"
+    .incbin "obj/nes/spritegfx.chr"
