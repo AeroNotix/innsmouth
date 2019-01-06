@@ -38,7 +38,6 @@ CURRENT_CHAR: .res 1
 
     WAIT_FOR_VBLANK
 
-
     ;; Initialize PPU Control Register One parameters
     LDX #VBLANK_NMI
     STX PPUCTRL
@@ -50,13 +49,13 @@ CURRENT_CHAR: .res 1
     STX PPUMASK
 
     JSR update_graphics
+    JSR load_main_palette
+
     JMP main
 .endproc
 
 .proc main
-    JSR load_main_palette
-forever:
-    JMP forever
+    JMP main
 .endproc
 
 .segment "CHR"
