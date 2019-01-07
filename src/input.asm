@@ -19,6 +19,7 @@ BUTTON_RIGHT  = 1 << 0
 
 .proc read_pads
     ;; Absolutely not halal
+    ;;  The movement should be velocity-based not pixel-based, fix
     JSR read_pads_once
     JSR read_pads_once
     JSR read_pads_once
