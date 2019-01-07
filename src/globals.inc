@@ -9,5 +9,8 @@
 .global update_graphics, OAM
 
 ;;; input.asm
-.global handle_input
+.global handle_input, read_pads
+
+;;; zp.asm
+.global buttons
 .endif

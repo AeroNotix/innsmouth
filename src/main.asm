@@ -4,7 +4,8 @@
 .include "macros.inc"
 .include "constants.inc"
 .include "globals.inc"
-.import load_graphics_into_ppu, load_main_palette
+.import load_graphics_into_ppu, load_main_palette, handle_input
+.importzp x_pos, y_pos, graphics_need_update
 
 .segment "ZEROPAGE"
 CURRENT_CHAR: .res 1
@@ -20,6 +21,8 @@ CURRENT_CHAR: .res 1
     STA OAMADDR
     LDA #>OAM
     STA OAM_DMA
+    LDA #1
+    STA graphics_need_update
     RTI
 .endproc
 
@@ -43,10 +46,15 @@ CURRENT_CHAR: .res 1
     STX PPUCTRL
 
     WAIT_FOR_VBLANK
-
     ;; Set PPU Mask parameters
     LDX #OBJ_ON | BG_OFF
     STX PPUMASK
+
+    LDA #126
+    STA y_pos
+
+    LDA #50
+    STA x_pos
 
     JSR update_graphics
     JSR load_main_palette
@@ -55,6 +63,12 @@ CURRENT_CHAR: .res 1
 .endproc
 
 .proc main
+    LDA graphics_need_update
+    CMP #1
+    BNE skip
+    JSR handle_input
+    JSR update_graphics
+skip:
     JMP main
 .endproc
 
