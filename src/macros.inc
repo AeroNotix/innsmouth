@@ -37,4 +37,14 @@
     ;; The joypads have now been reloaded and their state will be constant
 .endmacro
 
+.macro WRITE_OAM y_pos, sprite_idx, palette, x_pos, offset
+    LDA y_pos
+    STA OAM, offset
+    LDA sprite_idx
+    STA OAM+1, offset
+    LDA palette
+    STA OAM+2, offset
+    LDA x_pos
+    STA OAM+3, offset
+.endmacro
 .endif

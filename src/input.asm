@@ -116,26 +116,38 @@ next_key:
 
 .proc handle_input
     JSR read_pads
+
     LDA buttons
+    AND #BUTTON_RIGHT
     CMP #BUTTON_RIGHT
     BEQ inc_x
+
+bl: LDA buttons
+    AND #BUTTON_LEFT
     CMP #BUTTON_LEFT
     BEQ dec_x
+
+bu: LDA buttons
+    AND #BUTTON_UP
     CMP #BUTTON_UP
     BEQ dec_y
+
+bd: LDA buttons
+    AND #BUTTON_DOWN
     CMP #BUTTON_DOWN
     BEQ inc_y
     RTS
+
 inc_x:
     INC x_pos
-    RTS
+    JMP bl
 dec_x:
     DEC x_pos
-    RTS
-inc_y:
-    INC y_pos
-    RTS
+    JMP bu
 dec_y:
     DEC y_pos
+    JMP bd
+inc_y:
+    INC y_pos
     RTS
 .endproc
