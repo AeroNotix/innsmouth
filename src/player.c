@@ -59,6 +59,24 @@ void move_player() {
     y_pos += y_vel;
 }
 
+void add_up_accel() {
+    if (buttons & 8) {
+        y_vel -= ACCELERATE_RATE;
+        if (y_vel < -MAX_SPEED) {
+            y_vel = -MAX_SPEED;
+        }
+    }
+}
+
+void add_down_accel() {
+    if (buttons & 4) {
+        y_vel += ACCELERATE_RATE;
+        if (y_vel > MAX_SPEED) {
+            y_vel = MAX_SPEED;
+        }
+    }
+}
+
 void add_right_accel() {
     if (buttons & 1) {
         x_vel += ACCELERATE_RATE;
@@ -84,6 +102,15 @@ void decelerate() {
         }
         if (x_vel > 0) {
             x_vel -= DECELERATE_RATE;
+        }
+    }
+
+    if (!(buttons & 4) && !(buttons & 8)) {
+        if (y_vel < 0) {
+            y_vel += DECELERATE_RATE;
+        }
+        if (y_vel > 0) {
+            y_vel -= DECELERATE_RATE;
         }
     }
 }
