@@ -60,6 +60,11 @@ CURRENT_CHAR: .res 1
 .endproc
 
 .proc main
+    ;; Only need to update physics (right now) if a VBlank already triggered
+    LDA graphics_need_update
+    CMP #1
+    BNE skip
+
     JSR handle_input
     JSR update_graphics
 skip:
