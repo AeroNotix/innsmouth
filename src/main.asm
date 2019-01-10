@@ -21,8 +21,10 @@ CURRENT_CHAR: .res 1
     STA OAMADDR
     LDA #>OAM
     STA OAM_DMA
-    LDA #1
-    STA graphics_need_update
+
+    JSR handle_input
+    JSR update_graphics
+
     RTI
 .endproc
 
@@ -60,13 +62,6 @@ CURRENT_CHAR: .res 1
 .endproc
 
 .proc main
-    ;; Only need to update physics (right now) if a VBlank already triggered
-    LDA graphics_need_update
-    CMP #1
-    BNE skip
-
-    JSR handle_input
-    JSR update_graphics
 skip:
     JMP main
 .endproc

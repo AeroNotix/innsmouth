@@ -16,5 +16,5 @@
 
 ;; player.c
 .globalzp _x_pos, _y_pos, _x_vel, _y_vel
-.global _init_player, _add_right_accel, _add_left_accel, _move_player, _read_pads_once
+.global _init_player, _add_right_accel, _add_left_accel, _decelerate, _move_player, _read_pads_once
 .endif

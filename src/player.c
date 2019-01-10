@@ -1,9 +1,9 @@
 #include "nes.h"
 #include "input.h"
 
-#define ACCELERATE_AMOUNT 1
-#define DECELERATE_AMOUNT 20
-#define MAX_SPEED 100
+#define ACCELERATE_RATE 1
+#define DECELERATE_RATE 1
+#define MAX_SPEED 5
 
 extern char buttons;
 #pragma zpsym("buttons");
@@ -61,15 +61,29 @@ void move_player() {
 
 void add_right_accel() {
     if (buttons & 1) {
-        x_vel = x_vel + ACCELERATE_AMOUNT;
-    } else {
+        x_vel += ACCELERATE_RATE;
         if (x_vel > MAX_SPEED) {
             x_vel = MAX_SPEED;
-        } else if (x_vel < 0) {
-            x_vel = 0;
         }
     }
 }
 
 void add_left_accel() {
+    if (buttons & 2) {
+        x_vel -= ACCELERATE_RATE;
+        if (x_vel < -MAX_SPEED) {
+            x_vel = -MAX_SPEED;
+        }
+    }
+}
+
+void decelerate() {
+    if (!(buttons & 1) && !(buttons & 2)) {
+        if (x_vel < 0) {
+            x_vel += DECELERATE_RATE;
+        }
+        if (x_vel > 0) {
+            x_vel -= DECELERATE_RATE;
+        }
+    }
 }
