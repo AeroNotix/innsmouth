@@ -9,8 +9,12 @@
 .global update_graphics, OAM
 
 ;;; input.asm
-.global handle_input, read_pads
+.global read_pads
 
 ;;; zp.asm
-.global buttons
+.globalzp _buttons, graphics_need_update
+
+;; player.c
+.globalzp _x_pos, _y_pos, _x_vel, _y_vel
+.global _init_player, _add_right_accel, _add_left_accel, _move_player
 .endif

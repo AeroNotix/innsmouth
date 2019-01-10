@@ -5,7 +5,7 @@
 .include "constants.inc"
 .include "globals.inc"
 .import load_graphics_into_ppu, load_main_palette, handle_input
-.importzp x_pos, y_pos, graphics_need_update
+.importzp _x_pos, _y_pos, graphics_need_update
 
 .segment "ZEROPAGE"
 CURRENT_CHAR: .res 1
@@ -50,22 +50,16 @@ CURRENT_CHAR: .res 1
     LDX #OBJ_ON | BG_OFF
     STX PPUMASK
 
-    LDA #126
-    STA y_pos
-
-    LDA #50
-    STA x_pos
+    JSR _init_player
 
     JSR update_graphics
     JSR load_main_palette
+
 
     JMP main
 .endproc
 
 .proc main
-    LDA graphics_need_update
-    CMP #1
-    BNE skip
     JSR handle_input
     JSR update_graphics
 skip:

@@ -1,4 +1,4 @@
-.exportzp buttons, x_pos, y_pos, graphics_need_update
+.exportzp _buttons, graphics_need_update
 
 
 .segment "ZEROPAGE"
@@ -9,8 +9,5 @@
 ;;;   for functions elsewhere. This is not memory efficient but
 ;;;   optimizations can happen when necessary.
 ;;;
-buttons = 0
-x_pos = 1
-y_pos = 2
-graphics_need_update = 3
-;;; Global variables
+_buttons:    .res 1
+graphics_need_update:   .res 1
