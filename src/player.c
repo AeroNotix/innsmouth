@@ -17,11 +17,6 @@ char x;
 int x_pos;
 int y_pos;
 
-signed char x_pos_hi;
-signed char x_pos_lo;
-signed char y_pos_hi;
-signed char y_pos_lo;
-
 signed char x_vel;
 signed char y_vel;
 
@@ -30,10 +25,6 @@ signed char y_vel;
 void init_player() {
     x_pos = 0;
     y_pos = 0;
-    x_pos_hi = 0;
-    x_pos_lo = 0;
-    y_pos_hi = 0;
-    y_pos_lo = 0;
     x_vel = 0;
     y_vel = 0;
 }
