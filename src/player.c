@@ -17,6 +17,7 @@ char x;
 int x_pos;
 int y_pos;
 
+signed char ignore_vel;
 signed char x_vel;
 signed char y_vel;
 
@@ -45,7 +46,35 @@ signed char max(signed char a, signed char b) {
     return b;
 }
 
-void move_player() {
+// Todo: refactor following acceleration functions into offsets into a
+// parameter list. Each L/R/U/D key can be used as the index into the
+// table and the zeroth index can be a NOP.
+//
+// The implementation must take into account that cc65/6502 arrays are
+// dog shit slow and are very chunky pieces of code when compiled.
+
+/* struct acceleration_rate { */
+/*     signed char* axis; */
+/*     unsigned char rate; */
+/* }; */
+
+/* struct acceleration_rate acceleration_rates[] = { */
+/*     {*ignore_vel, 0}, */
+/*     {*x_vel, ACCELERATE_RATE} */
+/* };
+
+   void apply_acceleration() {
+       up_operation = acceleration_rates[buttons & 8];
+       *up_operation.axis += up_operation.rate
+   }
+
+   And so on for each keypress. The implementation ideally should be
+   done in assembly since the generated code for this will be
+   terrible.
+*/
+
+
+void __fastcall__  move_player(void) {
     x_pos += x_vel;
     y_pos += y_vel;
 }
