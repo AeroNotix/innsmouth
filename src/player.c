@@ -22,14 +22,14 @@ signed char y_vel;
 
 #pragma bss-name("CODE")
 
-void init_player() {
+void __fastcall__  init_player(void) {
     x_pos = 0;
     y_pos = 0;
     x_vel = 0;
     y_vel = 0;
 }
 
-void read_pads_once() {
+void __fastcall__  read_pads_once(void) {
     POKE(JOY1, 1);
     POKE(JOY1, 0);
     buttons = 0;
@@ -50,7 +50,7 @@ void move_player() {
     y_pos += y_vel;
 }
 
-void add_up_accel() {
+void __fastcall__  add_up_accel(void) {
     if (buttons & 8) {
         y_vel -= ACCELERATE_RATE;
         if (y_vel < -MAX_SPEED) {
@@ -59,7 +59,7 @@ void add_up_accel() {
     }
 }
 
-void add_down_accel() {
+void __fastcall__  add_down_accel(void) {
     if (buttons & 4) {
         y_vel += ACCELERATE_RATE;
         if (y_vel > MAX_SPEED) {
@@ -68,7 +68,7 @@ void add_down_accel() {
     }
 }
 
-void add_right_accel() {
+void __fastcall__  add_right_accel(void) {
     if (buttons & 1) {
         x_vel += ACCELERATE_RATE;
         if (x_vel > MAX_SPEED) {
@@ -77,7 +77,7 @@ void add_right_accel() {
     }
 }
 
-void add_left_accel() {
+void __fastcall__  add_left_accel(void) {
     if (buttons & 2) {
         x_vel -= ACCELERATE_RATE;
         if (x_vel < -MAX_SPEED) {
@@ -86,7 +86,7 @@ void add_left_accel() {
     }
 }
 
-void decelerate() {
+void __fastcall__  decelerate(void) {
     if (!(buttons & 1) && !(buttons & 2)) {
         if (x_vel < 0) {
             x_vel += DECELERATE_RATE;
