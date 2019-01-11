@@ -3,7 +3,7 @@
 
 #define ACCELERATE_RATE 1
 #define DECELERATE_RATE 1
-#define MAX_SPEED 5
+#define MAX_SPEED 4
 
 extern char buttons;
 #pragma zpsym("buttons");
