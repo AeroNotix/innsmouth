@@ -4,7 +4,8 @@
 .include "macros.inc"
 .include "constants.inc"
 .include "globals.inc"
-.import load_graphics_into_ppu, load_main_palette, handle_input
+
+.import load_graphics_into_ppu, load_main_palette, handle_input, _update_player_graphics
 .importzp _x_pos, _y_pos, graphics_need_update
 
 .segment "ZEROPAGE"
@@ -23,7 +24,7 @@ CURRENT_CHAR: .res 1
     STA OAM_DMA
 
     JSR handle_input
-    JSR update_graphics
+    JSR _update_player_graphics
 
     RTI
 .endproc
@@ -54,9 +55,8 @@ CURRENT_CHAR: .res 1
 
     JSR _init_player
 
-    JSR update_graphics
+    JSR _update_player_graphics
     JSR load_main_palette
-
 
     JMP main
 .endproc

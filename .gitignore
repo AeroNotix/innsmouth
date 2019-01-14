@@ -2,3 +2,4 @@
 *.nes
 map.txt
 src/player.asm
+src/graphics.asm
