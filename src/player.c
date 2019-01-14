@@ -39,7 +39,7 @@ void __fastcall__  read_pads_once(void) {
     }
 }
 
-signed char max(signed char a, signed char b) {
+signed char __fastcall__ max(signed char a, signed char b) {
     if (a > b) {
         return a;
     }
