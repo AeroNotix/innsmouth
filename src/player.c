@@ -54,11 +54,23 @@ void __fastcall__  move_player(void) {
     }
 }
 
+void __fastcall__ clamp_y(void) {
+    if (player.y_vel > MAX_SPEED) {
+        player.y_vel = MAX_SPEED;
+    }
+}
+
+void __fastcall__ clamp_x(void) {
+    if (player.x_vel > MAX_SPEED) {
+        player.x_vel = MAX_SPEED;
+    }
+}
+
 void __fastcall__  add_up_accel(void) {
     if (buttons & 8) {
         player.v_dir = up;
         player.y_vel += ACCELERATE_RATE;
-        CLAMP(player.y_vel, MAX_SPEED);
+        clamp_y();
     }
 }
 
@@ -66,7 +78,7 @@ void __fastcall__  add_down_accel(void) {
     if (buttons & 4) {
         player.v_dir = down;
         player.y_vel += ACCELERATE_RATE;
-        CLAMP(player.y_vel, MAX_SPEED);
+        clamp_y();
     }
 }
 
@@ -74,7 +86,7 @@ void __fastcall__  add_right_accel(void) {
     if (buttons & 1) {
         player.h_dir = right;
         player.x_vel += ACCELERATE_RATE;
-        CLAMP(player.x_vel, MAX_SPEED);
+        clamp_x();
     }
 }
 
@@ -82,7 +94,7 @@ void __fastcall__  add_left_accel(void) {
     if (buttons & 2) {
         player.h_dir = left;
         player.x_vel += ACCELERATE_RATE;
-        CLAMP(player.x_vel, MAX_SPEED);
+        clamp_x();
     }
 }
 
