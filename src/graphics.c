@@ -9,8 +9,8 @@
 #pragma bss-name("CODE")
 
 void __fastcall__ update_player_graphics(void) {
-    POKE(OAM, player.y_pos);
+    POKE(OAM, player.y_pos >> 8);
     POKE(OAM+1, player.sprite_index);
     POKE(OAM+2, player.palette_index);
-    POKE(OAM+3, player.x_pos);
+    POKE(OAM+3, player.x_pos >> 8);
 }

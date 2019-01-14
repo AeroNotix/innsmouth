@@ -1,9 +1,9 @@
 #ifndef PLAYER_H
 #define PLAYER_H 1
 
-#define ACCELERATE_RATE 1
-#define DECELERATE_RATE 1
-#define MAX_SPEED 4
+#define ACCELERATE_RATE 256
+#define DECELERATE_RATE 100
+#define MAX_SPEED 1000
 
 typedef enum direction{left, right, up, down} DIR;
 
@@ -14,8 +14,8 @@ typedef struct Player {
     int x_pos;
     int y_pos;
 
-    signed char x_vel;
-    signed char y_vel;
+    int x_vel;
+    int y_vel;
 
     signed char sprite_index;
     signed char palette_index;
