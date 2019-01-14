@@ -5,12 +5,11 @@
 #define DECELERATE_RATE 1
 #define MAX_SPEED 4
 
-typedef enum horizontal_direction{h_none, h_left, h_right} H_DIR;
-typedef enum vertical_direction{v_none, v_up, v_down} V_DIR;
+typedef enum direction{left, right, up, down} DIR;
 
 typedef struct Player {
-    H_DIR h_dir;
-    V_DIR v_dir;
+    DIR h_dir;
+    DIR v_dir;
 
     int x_pos;
     int y_pos;
