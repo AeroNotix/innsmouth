@@ -9,7 +9,9 @@ extern char buttons;
 
 #pragma zpsym("buttons");
 
-#pragma bss-name("ZEROPAGE")
+#pragma bss-name("ZEROPAGE");
+
+signed char x;
 
 // cc65 doesn't really quite allow stack allocated memory
 Player player;
@@ -33,15 +35,9 @@ void __fastcall__  read_pads_once(void) {
     POKE(JOY1, 1);
     POKE(JOY1, 0);
     buttons = 0;
-    // manually -funroll'd
-    buttons = (buttons << 1) | (JOYPAD1_READ & 1);
-    buttons = (buttons << 1) | (JOYPAD1_READ & 1);
-    buttons = (buttons << 1) | (JOYPAD1_READ & 1);
-    buttons = (buttons << 1) | (JOYPAD1_READ & 1);
-    buttons = (buttons << 1) | (JOYPAD1_READ & 1);
-    buttons = (buttons << 1) | (JOYPAD1_READ & 1);
-    buttons = (buttons << 1) | (JOYPAD1_READ & 1);
-    buttons = (buttons << 1) | (JOYPAD1_READ & 1);
+    for (x = 0; x < 8; ++x) {
+        buttons = (buttons << 1) | (JOYPAD1_READ & 1);
+    }
 }
 
 
