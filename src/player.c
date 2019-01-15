@@ -11,9 +11,8 @@ extern char buttons;
 
 #pragma bss-name("ZEROPAGE");
 
-signed char x;
-
 // cc65 doesn't really quite allow stack allocated memory
+signed char x;
 Player player;
 
 #pragma bss-name("CODE")
