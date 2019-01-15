@@ -43,14 +43,14 @@ void __fastcall__  read_pads_once(void) {
 
 void __fastcall__  move_player(void) {
     if (player.h_dir == right) {
-        player.x_pos += player.x_vel;
+        player.x_pos += (player.x_vel >> 8);
     } else {
-        player.x_pos -= player.x_vel;
+        player.x_pos -= (player.x_vel >> 8);
     }
     if (player.v_dir == down) {
-        player.y_pos += player.y_vel;
+        player.y_pos += (player.y_vel >> 8);
     } else {
-        player.y_pos -= player.y_vel;
+        player.y_pos -= (player.y_vel >> 8);
     }
 }
 
@@ -102,12 +102,18 @@ void __fastcall__  decelerate(void) {
     if (!(buttons & 1) && !(buttons & 2)) {
         if (player.x_vel > 0) {
             player.x_vel -= DECELERATE_RATE;
+            if (player.x_vel < 0) {
+                player.x_vel = 0;
+            }
         }
     }
 
     if (!(buttons & 4) && !(buttons & 8)) {
         if (player.y_vel > 0) {
             player.y_vel -= DECELERATE_RATE;
+            if (player.y_vel < 0) {
+                player.y_vel = 0;
+            }
         }
     }
 }

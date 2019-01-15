@@ -11,8 +11,8 @@ typedef struct Player {
     DIR h_dir;
     DIR v_dir;
 
-    int x_pos;
-    int y_pos;
+    signed char x_pos;
+    signed char y_pos;
 
     int x_vel;
     int y_vel;
