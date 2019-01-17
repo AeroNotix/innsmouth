@@ -65,31 +65,23 @@ void __fastcall__ clamp_x(void) {
     }
 }
 
-void __fastcall__  add_up_accel(void) {
+void __fastcall__  add_directional_acceleration(void) {
+    read_pads_once();
     if (buttons & 8) {
         player.v_dir = up;
         player.y_vel += ACCELERATE_RATE;
         clamp_y();
     }
-}
-
-void __fastcall__  add_down_accel(void) {
     if (buttons & 4) {
         player.v_dir = down;
         player.y_vel += ACCELERATE_RATE;
         clamp_y();
     }
-}
-
-void __fastcall__  add_right_accel(void) {
     if (buttons & 1) {
         player.h_dir = right;
         player.x_vel += ACCELERATE_RATE;
         clamp_x();
     }
-}
-
-void __fastcall__  add_left_accel(void) {
     if (buttons & 2) {
         player.h_dir = left;
         player.x_vel += ACCELERATE_RATE;
